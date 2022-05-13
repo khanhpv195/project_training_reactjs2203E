@@ -1,7 +1,33 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import ReactLoading from "react-loading";
+import { Link, useNavigate } from "react-router-dom";
+import FromLogin from "../../features/login/FromLogin";
+import serviceCallApi from "../../services/serviceApi";
+import { useForm } from "react-hook-form";
 
 const RegisterPage = () => {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = async (data) => {
+    setLoading(true);
+    try {
+      await serviceCallApi("register", "POST", data);
+      setLoading(false);
+      navigate("/login");
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+    // Sau khi call Api thanh cong, back ve home, va lưu thông tin người dùng trong Localstorage
+    // Dùng redux toolkit dispatch Action login success => return => Locastorage
+    // Khi Logout xóa Localstorage
+  };
   return (
     <section className="h-100">
       <div className="container h-100">
@@ -17,62 +43,94 @@ const RegisterPage = () => {
             <div className="card shadow-lg">
               <div className="card-body p-5">
                 <h1 className="fs-4 card-title fw-bold mb-4">Register</h1>
-                <form
-                  method="POST"
-                  className="needs-validation"
-                  noValidate
-                  autoComplete="off"
-                >
-                  <div className="mb-3">
-                    <label className="mb-2 text-muted" htmlFor="name">
-                      Name
-                    </label>
-                    <input
-                      id="name"
-                      type="text"
-                      className="form-control"
-                      name="name"
-                      defaultValue
-                      required
+                {loading ? (
+                  <div className="text-center d-flex justify-content-center">
+                    <ReactLoading
+                      type="spin"
+                      color="blue"
+                      height={"20%"}
+                      width={"20%"}
                     />
-                    <div className="invalid-feedback">Name is required</div>
                   </div>
-                  <div className="mb-3">
-                    <label className="mb-2 text-muted" htmlFor="email">
-                      E-Mail Address
-                    </label>
-                    <input
-                      id="email"
-                      type="email"
-                      className="form-control"
-                      name="email"
-                      defaultValue
-                      required
-                    />
-                    <div className="invalid-feedback">Email is invalid</div>
-                  </div>
-                  <div className="mb-3">
-                    <label className="mb-2 text-muted" htmlFor="password">
-                      Password
-                    </label>
-                    <input
-                      id="password"
-                      type="password"
-                      className="form-control"
-                      name="password"
-                      required
-                    />
-                    <div className="invalid-feedback">Password is required</div>
-                  </div>
-                  <p className="form-text text-muted mb-3">
-                    By registering you agree with our terms and condition.
-                  </p>
-                  <div className="align-items-center d-flex">
-                    <button type="submit" className="btn btn-primary ms-auto">
-                      Register
-                    </button>
-                  </div>
-                </form>
+                ) : (
+                  <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="needs-validation"
+                  >
+                    <div className="mb-3">
+                      <label className="mb-2 text-muted" htmlFor="name">
+                        Name
+                      </label>
+                      <input
+                        id="name"
+                        type="text"
+                        className="form-control"
+                        {...register("name", { required: true })}
+                        required
+                      />
+                      <div className="text-danger">
+                        {errors.name && <span>Name field is required</span>}
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <label className="mb-2 text-muted" htmlFor="email">
+                        E-Mail Address
+                      </label>
+                      <input
+                        id="email"
+                        type="email"
+                        className="form-control"
+                        {...register("email", { required: true })}
+                        required
+                      />
+                      <div className="text-danger">
+                        {errors.name && <span>Email field is required</span>}
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <label className="mb-2 text-muted" htmlFor="password">
+                        Password
+                      </label>
+                      <input
+                        id="password"
+                        type="password"
+                        className="form-control"
+                        {...register("password", { required: true })}
+                        required
+                      />
+                      <div className="text-danger">
+                        {errors.password && (
+                          <span>Password field is required</span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <label className="mb-2 text-muted" htmlFor="password">
+                        Confirm Password
+                      </label>
+                      <input
+                        id="password"
+                        type="password"
+                        className="form-control"
+                        {...register("c_password", { required: true })}
+                        required
+                      />
+                      <div className="text-danger">
+                        {errors.c_password && (
+                          <span>Confirm password field is required</span>
+                        )}
+                      </div>
+                    </div>
+                    <p className="form-text text-muted mb-3">
+                      By registering you agree with our terms and condition.
+                    </p>
+                    <div className="align-items-center d-flex">
+                      <button type="submit" className="btn btn-primary ms-auto">
+                        Register
+                      </button>
+                    </div>
+                  </form>
+                )}
               </div>
               <div className="card-footer py-3 border-0">
                 <div className="text-center">

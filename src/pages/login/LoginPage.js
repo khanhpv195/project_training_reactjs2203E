@@ -2,20 +2,26 @@ import React, { useState } from "react";
 import ReactLoading from "react-loading";
 import { Link, useNavigate } from "react-router-dom";
 import FromLogin from "../../features/login/FromLogin";
+import serviceCallApi from "../../services/serviceApi";
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     setLoading(true);
-    setTimeout(() => {
+    setLoading(true);
+    try {
+      const result = await serviceCallApi("login", "POST", data);
+
       setLoading(false);
+      localStorage.setItem("userInfo", JSON.stringify(result.data.data));
       navigate("/");
-    }, 5000);
-
+    } catch (error) {
+      setLoading(false);
+      alert(error.message);
+    }
     // Sau khi call Api thanh cong, back ve home, va lưu thông tin người dùng trong Localstorage
-
     // Dùng redux toolkit dispatch Action login success => return => Locastorage
     // Khi Logout xóa Localstorage
   };
