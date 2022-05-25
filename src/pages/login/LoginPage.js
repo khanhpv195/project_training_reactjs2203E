@@ -10,14 +10,21 @@ const LoginPage = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    setLoading(true);
     try {
       const result = await serviceCallApi("login", "POST", data);
+      console.log(
+        "🚀 ~ file: LoginPage.js ~ line 16 ~ onSubmit ~ result",
+        result
+      );
 
       setLoading(false);
       localStorage.setItem("userInfo", JSON.stringify(result.data.data));
       navigate("/");
     } catch (error) {
+      console.log(
+        "🚀 ~ file: LoginPage.js ~ line 25 ~ onSubmit ~ error",
+        error
+      );
       setLoading(false);
       alert(error.message);
     }

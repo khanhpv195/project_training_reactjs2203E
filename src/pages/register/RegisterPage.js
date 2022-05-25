@@ -17,16 +17,17 @@ const RegisterPage = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await serviceCallApi("register", "POST", data);
+      const response = await serviceCallApi("register", "POST", data);
+      console.log(
+        "🚀 ~ file: RegisterPage.js ~ line 21 ~ onSubmit ~ response",
+        response
+      );
       setLoading(false);
       navigate("/login");
     } catch (error) {
       setLoading(false);
       console.log(error);
     }
-    // Sau khi call Api thanh cong, back ve home, va lưu thông tin người dùng trong Localstorage
-    // Dùng redux toolkit dispatch Action login success => return => Locastorage
-    // Khi Logout xóa Localstorage
   };
   return (
     <section className="h-100">
