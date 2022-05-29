@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import serviceCallApi from "../../services/serviceApi";
 import MainLayout from "./../main";
+import { useCart } from "react-use-cart";
+
 const HomePage = () => {
   // const info = localStorage.getItem("userInfo")
   //   ? localStorage.getItem("userInfo")
@@ -16,10 +18,13 @@ const HomePage = () => {
   // };
 
   /// get du lieu
+  const navigate = useNavigate();
+
   useEffect(() => {
     getProductList();
   }, []);
   const [data, setData] = useState([]);
+  const { addItem } = useCart();
 
   const getProductList = async () => {
     const categoryId = 2;
@@ -34,13 +39,33 @@ const HomePage = () => {
     setData(response.data.data);
   };
 
+  const gotoCart = (data) => {
+    addItem(data, parseInt(1));
+    navigate("/cart");
+  };
   const renderProduct = () => {
     return data.map((product, index) => {
+      const data = {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        avatar: product.avatar,
+        detail: product.detail,
+        cate_id: product.cate_id,
+      };
       return (
         <div className="row" key={index}>
           <div className="col-4">
+            {" "}
+            <button
+              className="btn btn-success btn-sm"
+              onClick={() => gotoCart(data)}
+            >
+              Add to Cart
+            </button>
             <Link to={`/${product.id}/${product.slug}`}>
               <h2> {product.name}</h2>
+
               <img
                 src={product.avatar}
                 className="img-thumbnail"
