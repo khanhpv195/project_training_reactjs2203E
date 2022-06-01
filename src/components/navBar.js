@@ -1,9 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "react-use-cart";
+import { userData } from "../utils";
 
 const NavBar = () => {
   const { totalUniqueItems, emptyCart } = useCart();
+
+  const logout = () => {
+    /// call Api logout, logout server
+    ///  Remove browser
+    localStorage.removeItem("userInfo");
+    window.location.reload();
+  };
   return (
     <div>
       <nav className="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
@@ -50,6 +58,14 @@ const NavBar = () => {
                   </span>
                 </Link>
                 {/* <button onClick={() => emptyCart()}> EmptyCart</button> */}
+              </li>
+              <li className="nav-item">
+                {userData ? (
+                  <button className="btn btn-small btn-danger" onClick={() => logout()}>Logout</button>
+
+                ) : (
+                  <Link to="/login">Login</Link>
+                )}
               </li>
             </ul>
           </div>

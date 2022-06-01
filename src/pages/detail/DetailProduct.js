@@ -32,6 +32,7 @@ const DetailProduct = () => {
       avatar: product.avatar,
       detail: product.detail,
       cate_id: product.cate_id,
+      product_id: product.id
     };
     addItem(data, parseInt(quantity));
   };

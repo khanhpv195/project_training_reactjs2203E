@@ -3,40 +3,31 @@ import { Link, useNavigate } from "react-router-dom";
 import serviceCallApi from "../../services/serviceApi";
 import MainLayout from "./../main";
 import { useCart } from "react-use-cart";
-
+import { userData } from "./../../utils";
 const HomePage = () => {
-  // const info = localStorage.getItem("userInfo")
-  //   ? localStorage.getItem("userInfo")
-  //   : {};
-
-  // const name = info ? JSON.parse(info) : null;
-  // const logout = () => {
-  //   /// call Api logout, logout server
-  //   ///  Remove browser
-  //   localStorage.removeItem("userInfo");
-  //   window.location.reload();
-  // };
-
   /// get du lieu
   const navigate = useNavigate();
+  const [data, setData] = useState([]);
+  const { addItem } = useCart();
 
   useEffect(() => {
     getProductList();
   }, []);
-  const [data, setData] = useState([]);
-  const { addItem } = useCart();
-
   const getProductList = async () => {
-    const categoryId = 2;
-    const response = await serviceCallApi(
-      `products?page=1&limit=10&id=${categoryId}`,
-      "GET"
-    );
-    console.log(
-      "🚀 ~ file: HomePage.js ~ line 28 ~ getProductList ~ response",
-      response
-    );
-    setData(response.data.data);
+    try {
+      const categoryId = 2;
+      const response = await serviceCallApi(
+        `products?page=1&limit=10&id=${categoryId}`,
+        "GET"
+      );
+      console.log(
+        "🚀 ~ file: HomePage.js ~ line 26 ~ getProductList ~ response",
+        response
+      );
+      setData(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const gotoCart = (data) => {
@@ -54,11 +45,11 @@ const HomePage = () => {
         cate_id: product.cate_id,
       };
       return (
-        <div className="row" key={index}>
-          <div className="col-4">
+        <div className='row' key={index}>
+          <div className='col-4'>
             {" "}
             <button
-              className="btn btn-success btn-sm"
+              className='btn btn-success btn-sm'
               onClick={() => gotoCart(data)}
             >
               Add to Cart
@@ -68,7 +59,7 @@ const HomePage = () => {
 
               <img
                 src={product.avatar}
-                className="img-thumbnail"
+                className='img-thumbnail'
                 alt={product.name}
               />
             </Link>
@@ -83,10 +74,8 @@ const HomePage = () => {
     return (
       <>
         <h1>Home Page</h1>
-        {/* <h2> {name ? name.name : null} </h2> */}
-        {/* {info ? " " : <Link to="/login">Login</Link>}
-      {info ? <button onClick={() => logout()}>Logout</button> : ""} */}
-        <div className="container">test{renderProduct()}</div>
+        <h2> {userData ? userData.name : null} </h2>
+        <div className='container'>test{renderProduct()}</div>
       </>
     );
   };

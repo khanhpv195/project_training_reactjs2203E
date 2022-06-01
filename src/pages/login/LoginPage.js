@@ -16,9 +16,9 @@ const LoginPage = () => {
         "🚀 ~ file: LoginPage.js ~ line 16 ~ onSubmit ~ result",
         result
       );
-
       setLoading(false);
-      localStorage.setItem("userInfo", JSON.stringify(result.data.data));
+      localStorage.setItem("userInfo", JSON.stringify(result));
+      /// dispath action login
       navigate("/");
     } catch (error) {
       console.log(
