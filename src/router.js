@@ -7,12 +7,8 @@ import Cart from "./pages/cart/Cart";
 import Checkout from "./pages/checkout/Checkout";
 import ThankPage from "./pages/thank/ThankPage";
 import UserPage from "./pages/user/UserPage";
-import { useSelector } from "react-redux";
-import { selectSignin } from "./../src/features/login/loginSlice";
 import React from "react";
 function Routing() {
-  const { loggedIn } = useSelector(selectSignin);
-
   return (
     <>
       <Routes>

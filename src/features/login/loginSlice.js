@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { auth } from "./../../services/authService.js";
 import { getCurrentUser } from "./../../api/userAPI";
 
-export const checkAuth = createAsyncThunk("signin/checkAuth", async () => {
+export const checkAuth = createAsyncThunk("signing/checkAuth", async () => {
   if (auth.isAuthenticated()) {
     const token = auth.getToken();
     const user = await getCurrentUser({ token });
