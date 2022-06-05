@@ -7,11 +7,22 @@ import Cart from "./pages/cart/Cart";
 import Checkout from "./pages/checkout/Checkout";
 import ThankPage from "./pages/thank/ThankPage";
 import UserPage from "./pages/user/UserPage";
-
+import { useDispatch, useSelector } from "react-redux";
+import {
+  logout,
+  checkAuth,
+  selectSignin,
+} from "./../src/features/login/loginSlice";
+import React, { useEffect } from "react";
 function Routing() {
-  const userInfo = localStorage.getItem("userInfo");
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+  const { loggedIn } = useSelector(selectSignin);
+
   const ProtectedRoute = (routerEnd) => {
-    if (userInfo === null) {
+    if (loggedIn === false) {
       return <LoginPage />;
     }
     const routerRedirect = routerEnd.routerEnd;

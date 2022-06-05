@@ -4,11 +4,19 @@ import serviceCallApi from "../../services/serviceApi";
 import MainLayout from "./../main";
 import { useCart } from "react-use-cart";
 import { userData } from "./../../utils";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  checkAuth,
+  logout,
+  selectSignin,
+} from "./../../features/login/loginSlice";
+
 const HomePage = () => {
   /// get du lieu
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const { addItem } = useCart();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getProductList();
@@ -19,10 +27,6 @@ const HomePage = () => {
       const response = await serviceCallApi(
         `products?page=1&limit=10&id=${categoryId}`,
         "GET"
-      );
-      console.log(
-        "🚀 ~ file: HomePage.js ~ line 26 ~ getProductList ~ response",
-        response
       );
       setData(response.data.data);
     } catch (error) {
