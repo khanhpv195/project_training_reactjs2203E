@@ -7,11 +7,12 @@ async function serviceCallApi(
   id = null,
   token = null
 ) {
-  // const BASE_URL = "http://khanh.tokyo/api/";
-  const BASE_URL = "http://127.0.0.1:8000/api/";
+  const BASE_URL = "http://khanh.tokyo/api/";
+  // const BASE_URL = "http://127.0.0.1:8000/api/";
   const config = {
     method: method,
     headers: {
+      Accept: "application/json",
       Authorization: token ? `Bearer ${token}` : null,
     },
     baseURL: BASE_URL,

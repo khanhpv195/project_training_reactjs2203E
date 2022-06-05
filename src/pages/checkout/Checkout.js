@@ -1,13 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "react-use-cart";
 import serviceCallApi from "../../services/serviceApi";
 import { userData } from "../../utils";
 import MainLayout from "../main";
 import ReactLoading from "react-loading";
+import { useSelector } from "react-redux";
+import { selectSignin } from "./../../features/login/loginSlice";
+
 const Checkout = () => {
   const [loading, setLoading] = useState(false);
+  const { loggedInUser } = useSelector(selectSignin);
+  console.log(loggedInUser);
   const {
     isEmpty,
     emptyCart,
@@ -73,7 +78,7 @@ const Checkout = () => {
                     type='text'
                     readOnly
                     className='form-control'
-                    defaultValue={userData ? userData.data.name : ""}
+                    defaultValue={loggedInUser ? loggedInUser.name : ""}
                     {...register("full_name", { required: true })}
                   />
                   <div className='text-danger'>
@@ -86,7 +91,7 @@ const Checkout = () => {
                     type='email'
                     readOnly
                     className='form-control'
-                    defaultValue={userData ? userData.data.email : ""}
+                    defaultValue={loggedInUser ? loggedInUser.email : ""}
                     {...register("email", { required: true })}
                   />
                 </div>
