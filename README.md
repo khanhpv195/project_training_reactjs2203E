@@ -1,1 +1,1 @@
-# Project study Reactjs, clone Tiki basic function
+project used for teaching
